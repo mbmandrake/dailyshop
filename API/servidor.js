@@ -198,14 +198,15 @@ servidor.get('/usuario/:id', async (req,res) => {
 servidor.post('/usuario', async (req,res) => {
     let dados = req.body;
 
-    let prod = new produto.Produto();
-    prod.nome = dados.nome;
-    prod.valor = dados.valor;
-    prod.variacao = dados.variacao;
-    prod.peso = dados.peso;
-    prod.dimensao = dados.dimensao;
-    prod.categoria = dados.categoria;
-    prod.ativo = dados.ativo;
+    let user = new usuario.Usuario();
+    user.nome = dados.nome;
+    user.email = dados.email;
+    user.senha = dados.senha;
+    user.telefone = dados.telefone;
+    user.cpf = dados.cpf;
+    user.idEndereco = dados.idEndereco;
+    user.idGrupo = dados.idGrupo;
+    user.ativo = dados.ativo;
 
     res.json(await usuario.addUsuario(user));
 });
@@ -213,15 +214,16 @@ servidor.post('/usuario', async (req,res) => {
 servidor.put('/usuario', async (req,res) => {
     let dados = req.body;
 
-    let prod = new produto.Produto();
-    prod.id = dados.id;
-    prod.nome = dados.nome;
-    prod.valor = dados.valo;
-    prod.variacao = dados.variacao;
-    prod.peso = dados.peso;
-    prod.dimensao = dados.dimensao;
-    prod.categoria = dados.categoria;
-    prod.ativo = dados.ativo;
+    let user = new usuario.Usuario();
+    user.id = dados.id;
+    user.nome = dados.nome;
+    user.email = dados.email;
+    user.senha = dados.senha;
+    user.telefone = dados.telefone;
+    user.cpf = dados.cpf;
+    user.idEndereco = dados.idEndereco;
+    user.idGrupo = dados.idGrupo;
+    user.ativo = dados.ativo;
 
     res.json(await usuario.updateUsuario(user));
 });

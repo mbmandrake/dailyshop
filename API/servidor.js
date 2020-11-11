@@ -5,6 +5,8 @@ const grupo = require('./grupo');
 const endereco = require('./endereco');
 const produto = require('./produto');
 const usuario = require('./usuario');
+const lista = require('./lista');
+const itemCompra = require('./itemCompra');
 
 const servidor = express();
 
@@ -183,7 +185,7 @@ servidor.delete('/produto/:id', async (req,res) => {
 
 //#endregion
 
-//#region usuario
+//#region Usuario
 
 servidor.get('/usuario', async (req,res) => {
     let lista = await usuario.getListaUsuario();
@@ -230,6 +232,98 @@ servidor.put('/usuario', async (req,res) => {
 
 servidor.delete('/usuario/:id', async (req,res) => {
     await usuario.deleteUsuario(req.params.id);
+    res.json('Status alterado com sucesso');
+});
+
+//#endregion
+
+//#region Lista de Compra
+
+servidor.get('/lista', async (req,res) => {
+    let lista = await lista.getListaCompra();
+    res.json(lista);
+});
+
+servidor.get('/lista/:id', async (req,res) => {
+    let lista = await lista.getListaCompraPorId(req.params.id);
+    res.json(lista);
+});
+
+servidor.post('/lista', async (req,res) => {
+    let dados = req.body;
+
+    let list = new lista.Lista();
+    list.idUsuario = dados.idUsuario;
+    list.valorTotal = dados.valorTotal;
+    list.formaPagamento = dados.formaPagamento;
+    list.statusPedido = dados.statusPedido;
+    list.ativo = dados.ativo;
+
+    res.json(await lista.addLista(list));
+});
+
+servidor.put('/lista', async (req,res) => {
+    let dados = req.body;
+
+    let list = new lista.Lista();
+    list.id = dados.id;
+    list.idUsuario = dados.idUsuario;
+    list.valorTotal = dados.valorTotal;
+    list.formaPagamento = dados.formaPagamento;
+    list.statusPedido = dados.statusPedido;
+    list.ativo = dados.ativo;
+
+    res.json(await lista.updateLista(list));
+});
+
+servidor.delete('/lista/:id', async (req,res) => {
+    await lista.deleteLista(req.params.id);
+    res.json('Status alterado com sucesso');
+});
+
+//#endregion
+
+//#region Item de Compra
+
+servidor.get('/itemCompra', async (req,res) => {
+    let lista = await itemCompra.getListaItemCompra();
+    res.json(lista);
+});
+
+servidor.get('/itemCompra/:id', async (req,res) => {
+    let lista = await usuario.getListaItemCompraPorId(req.params.id);
+    res.json(lista);
+});
+
+servidor.post('/itemCompra', async (req,res) => {
+    let dados = req.body;
+
+    let compra = new itemCompra.ItemCompra();
+    compra.idLista = dados.idLista;
+    compra.idProduto = dados.idProduto;
+    compra.valorProduto = dados.valorProduto;
+    compra.qtdProduto = dados.qtdProduto;
+    compra.valorTotal = dados.valorTotal;
+
+    res.json(await itemCompra.addItemCompra(user));
+});
+
+servidor.put('/itemCompra', async (req,res) => {
+    let dados = req.body;
+
+    let compra = new itemCompra.ItemCompra();
+    compra.id = dados.id;
+    compra.idLista = dados.idLista;
+    compra.idProduto = dados.idProduto;
+    compra.valorProduto = dados.valorProduto;
+    compra.qtdProduto = dados.qtdProduto;
+    compra.valorTotal = dados.valorTotal;
+
+    res.json(await itemCompra.updateItemCompra(compra));
+});
+
+servidor.delete('/itemCompra/:id', async (req,res) => {
+    await itemCompra.deleteItemCompra(req.params.id);
     res.json('Status alterado com sucesso');
 });
 

@@ -17,7 +17,7 @@ async function getListaUsuario(){
     let pool = await sql.connect(banco.config);
 
     let result = await pool.request().query(
-        'SELECT TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS from USUARIO;'
+        'SELECT ID_USUARIO AS ID, TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS, DT_REGISTRO from USUARIO;'
     );
 
     return(result.recordset);
@@ -27,7 +27,7 @@ async function getListaUsuarioPorId(id){
     let pool = await sql.connect(banco.config);
 
     let result = await pool.request().query(
-        'SELECT TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS from USUARIO WHERE ID_USUARIO = ' + id
+        'SELECT ID_USUARIO AS ID, TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS, DT_REGISTRO from USUARIO WHERE ID_USUARIO = ' + id
     );
     return(result.recordset[0]);
 };
@@ -46,7 +46,7 @@ async function addUsuario(user){
     .input('ativo', sql.Bit, user.ativo)
     .query(
         'insert into USUARIO values (@nome, @email, @senha, @telefone, @cpf, @idEndereco, @idGrupo, @ativo, GETDATE());' + 
-        'SELECT TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS FROM USUARIO WHERE ID_USUARIO = @@IDENTITY;'
+        'SELECT ID_USUARIO AS ID, TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS, DT_REGISTRO FROM USUARIO WHERE ID_USUARIO = @@IDENTITY;'
     );
 
     return(result.recordset[0]);
@@ -67,7 +67,7 @@ async function updateUsuario(user){
     .input('ativo', sql.Bit, user.ativo)
     .query(
         'update USUARIO set TX_NOME = @nome, TX_EMAIL = @email, TX_SENHA = @senha, TX_TELEFONE = @telefone, TX_CPF = @cpf, ID_ENDERECO = @idEndereco, ID_GRUPO = @idGrupo, BL_ATIVO = @ativo where ID_USUARIO = @id;' +
-        'SELECT TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS FROM USUARIO WHERE ID_USUARIO = @id;'
+        'SELECT ID_USUARIO AS ID, TX_NOME AS NOME, TX_EMAIL AS EMAIL, TX_SENHA AS SENHA, TX_TELEFONE AS TELEFONE, TX_CPF AS CPF, ID_ENDERECO AS ENDERECO, ID_GRUPO AS GRUPO, BL_ATIVO AS STATUS, DT_REGISTRO FROM USUARIO WHERE ID_USUARIO = @id;'
     );
 
     return(result.recordset);
